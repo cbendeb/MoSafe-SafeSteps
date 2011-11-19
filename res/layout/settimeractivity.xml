@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My name is " />
+
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/name_text"
+        android:text="Catherine" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/name_input"
+        android:text="My trip should take" />
+
+    <EditText
+        android:id="@+id/minutes_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/name_input"
+        android:text="10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/minutes_input"
+        android:id="@+id/arrive_within_text"
+        android:layout_below="@id/name_input"
+        android:text="minutes. If I don&apos;t arrive within" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_input"
+        android:layout_toRightOf="@id/arrive_within_text"
+        android:id="@+id/arrive_within_input"
+        android:text="10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="minutes of that time, notify" 
+        android:id="@+id/notify_text"
+        android:layout_below="@id/arrive_within_input"
+        android:layout_alignParentLeft="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tina Fey, Jack Black, Jack Nicholson, Christopher Walken"
+        android:layout_below="@id/notify_text"
+        android:id="@+id/notify_people"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="and tell them that"
+        android:layout_below="@id/notify_people"
+        android:id="@+id/tell_them" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Catherine has not arrived at her destination. Give her a call to make sure she&apos;s OK!" 
+        android:layout_below="@id/tell_them"/>
+
+    <!--
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alert these people:" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get contacts" 
+        android:id="@+id/getContactsButton"/>
+    -->
+
+</RelativeLayout>
