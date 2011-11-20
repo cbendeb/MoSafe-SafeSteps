@@ -1,145 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/name_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <RelativeLayout
+            android:id="@+id/name_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="bottom"
+                android:text="My name is:" />
+
+            <EditText
+                android:id="@+id/name_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" >
+
+                <requestFocus />
+            </EditText>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/from_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_container" >
+
+            <TextView
+                android:id="@+id/from_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="I&apos;m going from:" />
+
+            <EditText
+                android:id="@+id/from_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/to_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/from_container" >
+
+            <TextView
+                android:id="@+id/to_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="To" />
+
+            <EditText
+                android:id="@+id/to_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
         <TextView
-            android:id="@+id/name_label"
+            android:id="@+id/arrive_in_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="bottom"
-            android:text="My name is:" />
+            android:layout_below="@+id/to_container"
+            android:text="I should arrive in:" />
 
-        <EditText
-            android:id="@+id/name_input"
+        <TimePicker
+            android:id="@+id/timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/arrive_in_label"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <RelativeLayout
+            android:id="@+id/dont_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timePicker" >
+
+            <TextView
+                android:id="@+id/dont_check_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="If I don&apos;t check in within" />
+
+            <EditText
+                android:id="@+id/dont_check_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:inputType="number" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/after_eta_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timePicker" >
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/after_eta_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/dont_container"
+            android:layout_marginTop="14dp"
+            android:text="after my ETA, SafeSteps will contact:" />
+
+        <EditText
+            android:id="@+id/contacts_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" >
-
-            <requestFocus />
-        </EditText>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/from_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name_container" >
+            android:layout_below="@+id/after_eta_text"
+            android:layout_marginTop="18dp"
+            android:inputType="textMultiLine" />
 
         <TextView
-            android:id="@+id/from_label"
+            android:id="@+id/message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="I&apos;m going from:" />
+            android:layout_below="@+id/contacts_container"
+            android:layout_marginTop="14dp"
+            android:text="and tell them that:" />
 
         <EditText
-            android:id="@+id/from_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/to_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/from_container" >
-
-        <TextView
-            android:id="@+id/to_label"
+            android:id="@+id/message_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="To" />
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/message_text"
+            android:layout_marginTop="18dp"
+            android:inputType="textMultiLine" />
 
-        <EditText
-            android:id="@+id/to_input"
+        <Button
+            android:id="@+id/add_more_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            android:layout_below="@+id/message_input"
+            android:layout_marginTop="26dp"
+            android:layout_toRightOf="@+id/arrive_in_label"
+            android:text="Add More tiers" />
 
-    <TextView
-        android:id="@+id/arrive_in_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/to_container"
-        android:text="I should arrive in:" />
-
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/arrive_in_label"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-    <RelativeLayout
-        android:id="@+id/dont_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timePicker" >
-
-        <TextView
-            android:id="@+id/dont_check_label"
+        <Button
+            android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="If I don&apos;t check in within" />
-
-        <EditText
-            android:id="@+id/dont_check_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_below="@+id/add_more_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:text="Start!" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/after_eta_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timePicker" >
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/after_eta_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/dont_container"
-        android:layout_marginTop="14dp"
-        android:text="after my ETA, SafeSteps will contact:" />
-
-    <EditText
-        android:id="@+id/contacts_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/after_eta_text"
-        android:layout_marginTop="18dp"
-        android:inputType="textMultiLine" />
-
-    <Button
-        android:id="@+id/add_more_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/contacts_container"
-        android:layout_marginTop="26dp"
-        android:layout_toRightOf="@+id/arrive_in_label"
-        android:text="Add More tiers" />
-
-</RelativeLayout>
+</ScrollView>

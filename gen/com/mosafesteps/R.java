@@ -14,7 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int add_more_button=0x7f050014;
+        public static final int add_more_button=0x7f050016;
         public static final int after_eta_container=0x7f050011;
         public static final int after_eta_text=0x7f050012;
         public static final int arrive_in_label=0x7f05000c;
@@ -27,10 +27,17 @@ public final class R {
         public static final int from_container=0x7f050006;
         public static final int from_input=0x7f050008;
         public static final int from_label=0x7f050007;
+        public static final int hours=0x7f050018;
+        public static final int hours_minutes_semicolon=0x7f050019;
         public static final int main_layout=0x7f050000;
+        public static final int message_input=0x7f050015;
+        public static final int message_text=0x7f050014;
+        public static final int minutes=0x7f05001a;
+        public static final int minutes_seconds_semicolon=0x7f05001b;
         public static final int name_container=0x7f050003;
         public static final int name_input=0x7f050005;
         public static final int name_label=0x7f050004;
+        public static final int start_button=0x7f050017;
         public static final int timePicker=0x7f05000d;
         public static final int to_container=0x7f050009;
         public static final int to_input=0x7f05000b;
@@ -40,6 +47,7 @@ public final class R {
         public static final int main=0x7f030000;
         public static final int setrouteactivity=0x7f030001;
         public static final int settimeractivity=0x7f030002;
+        public static final int timer=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040001;

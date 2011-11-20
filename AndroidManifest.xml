@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".view.SetRouteActivity"></activity>
         <activity android:name="com.mosafesteps.view.SetTimerActivity"></activity>
+        <activity android:name="com.mosafesteps.view.TimerActivity"></activity>
     </application>
 
 </manifest>
