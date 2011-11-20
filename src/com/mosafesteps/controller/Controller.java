@@ -30,41 +30,93 @@ public class Controller {
 
 	public static String CONTACT_NAME = "contact_name";
 	public static String CONTACT_PHONE = "contact_phone";
-	public static String DEVICE_ID = "device_id";
+	public static String DEVICE_ID = "device";
 	public static String CMD = "cmd";
+	public static String MESSAGE = "message";
+	public static String DURATION = "duration";
+	public static String DELAY = "delay";
+	public static String PHONE = "phone";
+	private static String MESSAGEURL = "http://gentle-autumn-1780.herokuapp.com/trips/create_android?";
+	private static String CONTACTURL = "http://gentle-autumn-1780.herokuapp.com/notifications/create_android?";
+	private static String DELAYURL = "http://gentle-autumn-1780.herokuapp.com/notifications/delay_notifications?";
+    private static String CANCELURL = "http://gentle-autumn-1780.herokuapp.com/notifications/cancel_notifications?";
 
-	private static String URL = "https://api.cloudmine.me/v1/app/f1d9ec4fd59347b6ba349cb434e99e95/text";
+	public static void sendAdd10(Activity act){
+		List<NameValuePair> urlParams = new ArrayList<NameValuePair>();
+	    DefaultHttpClient httpclient = new DefaultHttpClient();
 
-	/*
-	 * PUT https://api.cloudmine.me/v1/app/{f1d9ec4fd59347b6ba349cb434e99e95
-	 * }/text Content-Type: application/json X-CloudMine-ApiKey:
-	 * da3e81090f19479ca887f0e0f84d9c52
-	 * 
-	 * { "key1": "value1", "key2": { "inner1": "innerVal1", "inner2":
-	 * "innerVal2" }, "key3": [42, 43] }
-	 */
+		TelephonyManager tManager = (TelephonyManager) act
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		String device = tManager.getDeviceId();
+		urlParams.add(new BasicNameValuePair(DEVICE_ID, device));
+		String paramString = URLEncodedUtils.format(urlParams, "utf-8");
+		String url = DELAYURL + paramString;
+	    HttpPost httpost = new HttpPost(url);
+	    try {
+			HttpResponse response = httpclient.execute(httpost);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void sendDone(Activity act){
+		List<NameValuePair> urlParams = new ArrayList<NameValuePair>();
+	    DefaultHttpClient httpclient = new DefaultHttpClient();
 
-	public static void sendContact(String name, String phone, Activity act) {
+		TelephonyManager tManager = (TelephonyManager) act
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		String device = tManager.getDeviceId();
+		urlParams.add(new BasicNameValuePair(DEVICE_ID, device));
+		String paramString = URLEncodedUtils.format(urlParams, "utf-8");
+		String url = CANCELURL + paramString;
+	    HttpPost httpost = new HttpPost(url);
+	    try {
+			HttpResponse response = httpclient.execute(httpost);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void sendContact(String message, long duration, long delay, ArrayList<String> contactNums, Activity act) {
 		try {
 			List<NameValuePair> urlParams = new ArrayList<NameValuePair>();
-		    HttpPost httpost = new HttpPost(URL);
 		    DefaultHttpClient httpclient = new DefaultHttpClient();
 
 			TelephonyManager tManager = (TelephonyManager) act
 					.getSystemService(Context.TELEPHONY_SERVICE);
-
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put(CONTACT_NAME, name);
-			jsonObj.put(CONTACT_PHONE, phone);
-			jsonObj.put(DEVICE_ID, tManager.getDeviceId());
-		    StringEntity se = new StringEntity(jsonObj.toString());
-
-		    httpost.setEntity(se);
-		    httpost.setHeader("Content-type", "application/json");
+			String device = tManager.getDeviceId();
+			
+			//send message information
+			urlParams.add(new BasicNameValuePair(DEVICE_ID, device));
+			urlParams.add(new BasicNameValuePair(MESSAGE, message));
+			urlParams.add(new BasicNameValuePair(DURATION, Long.toString(duration)));
+			
+			String paramString = URLEncodedUtils.format(urlParams, "utf-8");
+			String url = MESSAGEURL + paramString;
+			
+		    HttpPost httpost = new HttpPost(url);
 		    HttpResponse response = httpclient.execute(httpost);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    
+		    for(int i = 0; i < contactNums.size(); i++){
+		    	urlParams.clear();
+				urlParams.add(new BasicNameValuePair(DEVICE_ID, device));
+				urlParams.add(new BasicNameValuePair(DELAY, Long.toString(delay)));
+				urlParams.add(new BasicNameValuePair(PHONE, contactNums.get(i)));
+				paramString = URLEncodedUtils.format(urlParams, "utf-8");
+				url = CONTACTURL + paramString;
+				httpost = new HttpPost(url);
+				response = httpclient.execute(httpost);
+		    }
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.net.Uri;
@@ -27,6 +28,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +45,8 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 public class SetTimerActivity extends Activity implements
-		OnFocusChangeListener, OnTimeChangedListener, OnClickListener {
+		OnFocusChangeListener, OnTimeChangedListener, OnClickListener,
+		OnItemClickListener {
 
 	private TimePicker mTimePicker;
 	private Button mStart;
@@ -51,17 +56,13 @@ public class SetTimerActivity extends Activity implements
 	private EditText mDontCheck;
 	private EditText mMessage;
 	private ListView mContactList;
-	private LinearLayout mContactListContainer;
 
 	HashMap<String, ListContact> contacts = new HashMap<String, ListContact>();
+	ArrayList<ListContact> shownContacts = new ArrayList<SetTimerActivity.ListContact>();
 
 	private AlertDialog.Builder mContactSelector;
 	String[] names;
 	boolean[] selections;
-
-	protected CharSequence[] _options = { "Mercury", "Venus", "Earth", "Mars",
-			"Jupiter", "Saturn", "Uranus", "Neptune" };
-	protected boolean[] _selections = new boolean[_options.length];
 
 	// //////////////////////////
 	// Persistent storage / Preferences
@@ -81,8 +82,6 @@ public class SetTimerActivity extends Activity implements
 				Context.MODE_PRIVATE);
 		sEditor = sSharedPref.edit();
 
-		Controller.sendContact("foo", "123456789", this);
-
 		mStart = (Button) findViewById(R.id.start_button);
 		mName = (EditText) findViewById(R.id.name_input);
 		mFrom = (EditText) findViewById(R.id.from_input);
@@ -90,8 +89,7 @@ public class SetTimerActivity extends Activity implements
 		mMessage = (EditText) findViewById(R.id.message_input);
 		mDontCheck = (EditText) findViewById(R.id.dont_check_input);
 		mContactList = (ListView) findViewById(R.id.contactList);
-		mContactListContainer = (LinearLayout) findViewById(R.id.contactList_container);
-		
+
 		mContactSelector = new AlertDialog.Builder(this);
 
 		mName.setOnFocusChangeListener(this);
@@ -103,27 +101,29 @@ public class SetTimerActivity extends Activity implements
 		mTimePicker.setCurrentHour(0);
 		mTimePicker.setCurrentHour(0);
 		mTimePicker.setOnTimeChangedListener(this);
-		mContactListContainer.setOnClickListener(this);
+		mContactList.setOnItemClickListener(this);
 
 		retrieveData();
 
 		mStart.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				if (!mName.getText().toString().equals("")
-						&& !(mTimePicker.getCurrentHour() == 0 && mTimePicker
-								.getCurrentMinute() == 0)) {
-					Intent intent = new Intent(SetTimerActivity.this,
-							TimerActivity.class);
-					startActivity(intent);
-				} else if (mName.getText().toString().equals("")) {
+				if (mName.getText().toString().equals("")) {
 
 					int duration = Toast.LENGTH_LONG;
 
 					Toast toast = Toast.makeText(SetTimerActivity.this,
 							"Please tell us your name!", duration);
 					toast.show();
-				} else {
+				} else if (shownContacts.size() == 0
+						|| shownContacts.get(0).mName.equals("")) {
+					int duration = Toast.LENGTH_LONG;
+					Toast toast = Toast.makeText(SetTimerActivity.this,
+							"Please tell us who you'd like to notify!",
+							duration);
+					toast.show();
+				} else if (mTimePicker.getCurrentHour() == 0
+						&& mTimePicker.getCurrentMinute() == 0) {
 
 					int duration = Toast.LENGTH_LONG;
 
@@ -133,17 +133,58 @@ public class SetTimerActivity extends Activity implements
 									"Please tell us how long it'll take you to get where you're going!",
 									duration);
 					toast.show();
+				} else {
+					scheduleSendNotifications();
+					Intent intent = new Intent(SetTimerActivity.this,
+							TimerActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putLong("duration", mTimePicker.getCurrentHour()
+							* 60 * 60 * 1000 + mTimePicker.getCurrentMinute()
+							* 60 * 1000);
+					bundle.putLong(
+							"delay",
+							Integer.parseInt(mDontCheck.getText().toString()) * 60 * 1000);
+					bundle.putString("destination", mTo.getText().toString());
+					intent.putExtras(bundle);
+					startActivity(intent);
 				}
 
 			}
 
 		});
+		ArrayList<String> sc = new ArrayList<String>();
+		sc.add("");
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, sc);
+		mContactList.setAdapter(arrayAdapter);
 
-
-		populateContactList();
+		getContactList();
 	}
 
-	private void populateContactList() {
+	private void scheduleSendNotifications() {
+
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				ArrayList<String> contactNums = new ArrayList<String>();
+				for (int i = 0; i < shownContacts.size(); i++) {
+					contactNums.add(shownContacts.get(i).mPhone);
+				}
+				long millisecondsDuration = mTimePicker.getCurrentHour() * 60
+						* 60 * 1000 + mTimePicker.getCurrentMinute() * 60
+						* 1000;
+				long millisecondsDelay = Integer.parseInt(mDontCheck.getText()
+						.toString()) * 60 * 1000;
+				Controller.sendContact(mMessage.getText().toString(),
+						millisecondsDuration, millisecondsDelay, contactNums,
+						SetTimerActivity.this);
+			}
+		};
+		t.start();
+
+	}
+
+	private void getContactList() {
 		// Run query to get all contacts with a phone number
 		Uri uri = ContactsContract.Contacts.CONTENT_URI;
 		String[] projection = new String[] { ContactsContract.Contacts._ID,
@@ -159,13 +200,11 @@ public class SetTimerActivity extends Activity implements
 						ContactsContract.Contacts.DISPLAY_NAME }, null, null,
 				ContactsContract.Contacts.DISPLAY_NAME
 						+ " COLLATE LOCALIZED ASC");
-		int numResults = c1.getCount();
 
 		Cursor cursor = managedQuery(uri, projection, selection, selectionArgs,
 				sortOrder);
 		String query = "";
 		ArrayList<String> contactsForAdapter = new ArrayList<String>();
-		 numResults = cursor.getCount();
 
 		// process the contacts to get their IDs
 		while (cursor.moveToNext()) {
@@ -209,31 +248,94 @@ public class SetTimerActivity extends Activity implements
 		}
 		// cursor.close();
 
-		/*String[] fields = new String[] { ContactsContract.Data.DISPLAY_NAME };
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.contact_entry, cursor, fields,
-				new int[] { R.id.contactEntryText });
-		mContactList.setAdapter(adapter);*/
+		/*
+		 * String[] fields = new String[] { ContactsContract.Data.DISPLAY_NAME
+		 * }; SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+		 * R.layout.contact_entry, cursor, fields, new int[] {
+		 * R.id.contactEntryText }); mContactList.setAdapter(adapter);
+		 */
 
-		String[] names = new String[contactsForAdapter.size()];
-		boolean[] selections = new boolean[contactsForAdapter.size()];
+		HashMap<String, ListContact> newmap = new HashMap<String, SetTimerActivity.ListContact>();
+
+		Iterator<String> keys = contacts.keySet().iterator();
+		String key;
+		ListContact value;
+		while (keys.hasNext()) {
+			key = keys.next();
+			value = contacts.get(key);
+			newmap.put(value.mName, value);
+		}
+		contacts = newmap;
+		names = new String[contactsForAdapter.size()];
+		selections = new boolean[contactsForAdapter.size()];
 		contactsForAdapter.toArray(names);
+		loadSelections();
 
-		mContactSelector.setTitle("Choose your contacts")
-				.setMultiChoiceItems(names, selections, null)
+		mContactSelector
+				.setTitle("Choose your contacts")
+				.setMultiChoiceItems(names, selections,
+						multiChoiceClickListener)
 				.setPositiveButton("OK", returnFromContactSelector).create();
 
 	}
-	
-	DialogInterface.OnClickListener returnFromContactSelector = new DialogInterface.OnClickListener(){
+
+	OnMultiChoiceClickListener multiChoiceClickListener = new OnMultiChoiceClickListener() {
+
+		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+			selections[which] = isChecked;
+
+		}
+
+	};
+
+	DialogInterface.OnClickListener returnFromContactSelector = new DialogInterface.OnClickListener() {
 
 		public void onClick(DialogInterface dialog, int which) {
-			// TODO Auto-generated method stub
-			
+			saveSelections();
+			shownContacts.clear();
+			for (int i = 0; i < selections.length; i++) {
+				if (selections[i]) {
+					shownContacts.add(contacts.get(names[i]));
+				}
+			}
+			populateContactList();
 		}
 	};
-	
-	
+
+	private void saveSelections() {
+		for (int i = 0; i < selections.length; i++) {
+			sEditor.putBoolean(names[i], selections[i]);
+			sEditor.commit();
+		}
+	}
+
+	private void loadSelections() {
+		boolean shown;
+		shownContacts.clear();
+		for (int i = 0; i < names.length; i++) {
+			shown = sSharedPref.getBoolean(names[i], false);
+			if (shown) {
+				selections[i] = true;
+				if (contacts.containsKey(names[i])) {
+					shownContacts.add(contacts.get(names[i]));
+				}
+			}
+		}
+		populateContactList();
+	}
+
+	private void populateContactList() {
+		if (shownContacts.size() == 0) {
+			ListContact lc = new ListContact();
+			lc.mName = "";
+			shownContacts.add(lc);
+		}
+		ArrayAdapter<ListContact> arrayAdapter = new ArrayAdapter<ListContact>(
+				SetTimerActivity.this, android.R.layout.simple_list_item_1,
+				shownContacts);
+		mContactList.setAdapter(arrayAdapter);
+	}
+
 	/*
 	 * private void getContactsAndNumbers(){ // // Find contact based on name.
 	 * // ContentResolver cr = getContentResolver(); Cursor cursor =
@@ -388,15 +490,20 @@ public class SetTimerActivity extends Activity implements
 		public String mName;
 		public String mId;
 		public String mPhone;
+
+		@Override
+		public String toString() {
+			return mName;
+		}
 	}
 
 	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.contactList_container:
-			mContactSelector.show();
-			break;
-		}
-		
+
+	}
+
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+		mContactSelector.show();
 	}
 
 }

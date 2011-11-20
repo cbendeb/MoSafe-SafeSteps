@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -22,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.SetRouteActivity"></activity>
-        <activity android:name="com.mosafesteps.view.SetTimerActivity"></activity>
+        <activity android:name="com.mosafesteps.view.SetTimerActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name="com.mosafesteps.view.TimerActivity"></activity>
     </application>
 

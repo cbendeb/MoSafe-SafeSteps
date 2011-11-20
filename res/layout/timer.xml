@@ -6,20 +6,23 @@
     android:paddingLeft="40dp"
     android:paddingRight="40dp" >
 
-    <Button
+    <TextView
+        android:id="@+id/destination_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="PANIC" />
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="I'm arriving at _____ in" />
+        android:layout_marginTop="30dp"
+        android:text="I&apos;m arriving at {LOCATION} in" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="70dp" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <TextView
@@ -57,7 +60,7 @@
             android:textSize="60dp" />
 
         <TextView
-            android:id="@+id/hours"
+            android:id="@+id/seconds"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,19 +70,43 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="70dp" >
+
+        <TextView
+            android:id="@+id/status_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#ff4444" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Arrived" />
+            android:layout_weight="1"
+            android:text="Cancel" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/add10_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Add 10 minutes" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/arrived_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Arrived" />
 
 </LinearLayout>
