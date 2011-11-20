@@ -14,17 +14,27 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int arrive_within_input=0x7f050007;
-        public static final int arrive_within_text=0x7f050006;
+        public static final int add_more_button=0x7f050014;
+        public static final int after_eta_container=0x7f050011;
+        public static final int after_eta_text=0x7f050012;
+        public static final int arrive_in_label=0x7f05000c;
         public static final int buttonSetRoute=0x7f050001;
         public static final int buttonSetTimer=0x7f050002;
+        public static final int contacts_container=0x7f050013;
+        public static final int dont_check_input=0x7f050010;
+        public static final int dont_check_label=0x7f05000f;
+        public static final int dont_container=0x7f05000e;
+        public static final int from_container=0x7f050006;
+        public static final int from_input=0x7f050008;
+        public static final int from_label=0x7f050007;
         public static final int main_layout=0x7f050000;
-        public static final int minutes_input=0x7f050005;
-        public static final int name_input=0x7f050004;
-        public static final int name_text=0x7f050003;
-        public static final int notify_people=0x7f050009;
-        public static final int notify_text=0x7f050008;
-        public static final int tell_them=0x7f05000a;
+        public static final int name_container=0x7f050003;
+        public static final int name_input=0x7f050005;
+        public static final int name_label=0x7f050004;
+        public static final int timePicker=0x7f05000d;
+        public static final int to_container=0x7f050009;
+        public static final int to_input=0x7f05000b;
+        public static final int to_label=0x7f05000a;
     }
     public static final class layout {
         public static final int main=0x7f030000;

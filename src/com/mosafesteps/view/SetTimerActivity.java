@@ -3,6 +3,7 @@ package com.mosafesteps.view;
 import java.util.Timer;
 
 import com.mosafesteps.R;
+import com.mosafesteps.controller.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +24,8 @@ public class SetTimerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settimeractivity);
+        
+        Controller.sendContact("foo", "bar", this);
         
        /* mTimePicker = (TimePicker) findViewById(R.id.time_picker);
         mTimePicker.setIs24HourView(true);
