@@ -1,37 +1,67 @@
 package com.mosafesteps.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Timer;
 
 import com.mosafesteps.R;
 import com.mosafesteps.controller.Controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Contacts;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 public class SetTimerActivity extends Activity implements
-		OnFocusChangeListener, OnTimeChangedListener {
+		OnFocusChangeListener, OnTimeChangedListener, OnClickListener {
 
-	TimePicker mTimePicker;
-	Button mStart;
-	EditText mName;
-	EditText mFrom;
-	EditText mTo;
-	EditText mDontCheck;
-	EditText mMessage;
+	private TimePicker mTimePicker;
+	private Button mStart;
+	private EditText mName;
+	private EditText mFrom;
+	private EditText mTo;
+	private EditText mDontCheck;
+	private EditText mMessage;
+	private ListView mContactList;
+	private LinearLayout mContactListContainer;
+
+	HashMap<String, ListContact> contacts = new HashMap<String, ListContact>();
+
+	private AlertDialog.Builder mContactSelector;
+	String[] names;
+	boolean[] selections;
+
+	protected CharSequence[] _options = { "Mercury", "Venus", "Earth", "Mars",
+			"Jupiter", "Saturn", "Uranus", "Neptune" };
+	protected boolean[] _selections = new boolean[_options.length];
 
 	// //////////////////////////
 	// Persistent storage / Preferences
@@ -59,6 +89,11 @@ public class SetTimerActivity extends Activity implements
 		mTo = (EditText) findViewById(R.id.to_input);
 		mMessage = (EditText) findViewById(R.id.message_input);
 		mDontCheck = (EditText) findViewById(R.id.dont_check_input);
+		mContactList = (ListView) findViewById(R.id.contactList);
+		mContactListContainer = (LinearLayout) findViewById(R.id.contactList_container);
+		
+		mContactSelector = new AlertDialog.Builder(this);
+
 		mName.setOnFocusChangeListener(this);
 		mFrom.setOnFocusChangeListener(this);
 		mTo.setOnFocusChangeListener(this);
@@ -68,6 +103,7 @@ public class SetTimerActivity extends Activity implements
 		mTimePicker.setCurrentHour(0);
 		mTimePicker.setCurrentHour(0);
 		mTimePicker.setOnTimeChangedListener(this);
+		mContactListContainer.setOnClickListener(this);
 
 		retrieveData();
 
@@ -100,20 +136,127 @@ public class SetTimerActivity extends Activity implements
 				}
 
 			}
+
 		});
 
-		/*
-		 * mTimePicker = (TimePicker) findViewById(R.id.time_picker);
-		 * mTimePicker.setIs24HourView(true);
-		 * 
-		 * mGetContactsButton = (Button) findViewById(R.id.getContactsButton);
-		 * mGetContactsButton.setOnClickListener(new View.OnClickListener() {
-		 * 
-		 * public void onClick(View v) { Intent intent = new
-		 * Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-		 * startActivityForResult(intent, 10); } });
-		 */
+
+		populateContactList();
 	}
+
+	private void populateContactList() {
+		// Run query to get all contacts with a phone number
+		Uri uri = ContactsContract.Contacts.CONTENT_URI;
+		String[] projection = new String[] { ContactsContract.Contacts._ID,
+				ContactsContract.Contacts.DISPLAY_NAME, };
+		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + " = '"
+				+ "1" + "'";
+		String[] selectionArgs = null;
+		String sortOrder = ContactsContract.Contacts.DISPLAY_NAME
+				+ " COLLATE LOCALIZED ASC";
+
+		Cursor c1 = managedQuery(ContactsContract.Contacts.CONTENT_URI,
+				new String[] { ContactsContract.Contacts._ID,
+						ContactsContract.Contacts.DISPLAY_NAME }, null, null,
+				ContactsContract.Contacts.DISPLAY_NAME
+						+ " COLLATE LOCALIZED ASC");
+		int numResults = c1.getCount();
+
+		Cursor cursor = managedQuery(uri, projection, selection, selectionArgs,
+				sortOrder);
+		String query = "";
+		ArrayList<String> contactsForAdapter = new ArrayList<String>();
+		 numResults = cursor.getCount();
+
+		// process the contacts to get their IDs
+		while (cursor.moveToNext()) {
+			String contactId = cursor.getString(cursor
+					.getColumnIndex(ContactsContract.Contacts._ID));
+			String contactName = cursor.getString(cursor
+					.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+			ListContact contact;
+			if (contacts.containsKey(contactId)) {
+				contact = contacts.get(contactId);
+
+				contact.mName = contactName;
+			} else {
+				contact = new ListContact();
+
+				contact.mId = contactId;
+				contact.mName = contactName;
+				contacts.put(contactId, contact);
+				contactsForAdapter.add(contact.mName);
+			}
+			query += Phone.CONTACT_ID + " = " + contactId + " OR ";
+		}
+
+		// Run the query to get the contacts' phone numbers
+		if (query.length() > 0) {
+			query = query.substring(0, query.length() - 3);
+			Cursor phones = managedQuery(Phone.CONTENT_URI, null, query, null,
+					null);
+
+			while (phones.moveToNext()) {
+				String contactId = phones.getString(phones
+						.getColumnIndex(Phone.CONTACT_ID));
+				String phoneNumber = phones.getString(phones
+						.getColumnIndex(Phone.NUMBER));
+				ListContact contact = contacts.get(contactId);
+				if (contact != null) {
+					contact.mPhone = phoneNumber;
+				}
+			}
+			// phones.close();
+		}
+		// cursor.close();
+
+		/*String[] fields = new String[] { ContactsContract.Data.DISPLAY_NAME };
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+				R.layout.contact_entry, cursor, fields,
+				new int[] { R.id.contactEntryText });
+		mContactList.setAdapter(adapter);*/
+
+		String[] names = new String[contactsForAdapter.size()];
+		boolean[] selections = new boolean[contactsForAdapter.size()];
+		contactsForAdapter.toArray(names);
+
+		mContactSelector.setTitle("Choose your contacts")
+				.setMultiChoiceItems(names, selections, null)
+				.setPositiveButton("OK", returnFromContactSelector).create();
+
+	}
+	
+	DialogInterface.OnClickListener returnFromContactSelector = new DialogInterface.OnClickListener(){
+
+		public void onClick(DialogInterface dialog, int which) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	
+	/*
+	 * private void getContactsAndNumbers(){ // // Find contact based on name.
+	 * // ContentResolver cr = getContentResolver(); Cursor cursor =
+	 * cr.query(ContactsContract.Contacts.CONTENT_URI, null, "DISPLAY_NAME = '"
+	 * + NAME + "'", null, null); if (cursor.moveToFirst()) { String contactId =
+	 * cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+	 * // // Get all phone numbers. // Cursor phones =
+	 * cr.query(Phone.CONTENT_URI, null, Phone.CONTACT_ID + " = " + contactId,
+	 * null, null); while (phones.moveToNext()) { String number =
+	 * phones.getString(phones.getColumnIndex(Phone.NUMBER)); int type =
+	 * phones.getInt(phones.getColumnIndex(Phone.TYPE)); switch (type) { case
+	 * Phone.TYPE_HOME: // do something with the Home number here... break; case
+	 * Phone.TYPE_MOBILE: // do something with the Mobile number here... break;
+	 * case Phone.TYPE_WORK: // do something with the Work number here... break;
+	 * } } phones.close(); // // Get all email addresses. // Cursor emails =
+	 * cr.query(Email.CONTENT_URI, null, Email.CONTACT_ID + " = " + contactId,
+	 * null, null); while (emails.moveToNext()) { String email =
+	 * emails.getString(emails.getColumnIndex(Email.DATA)); int type =
+	 * emails.getInt(emails.getColumnIndex(Phone.TYPE)); switch (type) { case
+	 * Email.TYPE_HOME: // do something with the Home email here... break; case
+	 * Email.TYPE_WORK: // do something with the Work email here... break; } }
+	 * emails.close(); } cursor.close(); }
+	 */
 
 	private void retrieveData() {
 
@@ -239,6 +382,21 @@ public class SetTimerActivity extends Activity implements
 		sEditor.putInt("MINUTES", minute);
 		sEditor.commit();
 
+	}
+
+	private class ListContact {
+		public String mName;
+		public String mId;
+		public String mPhone;
+	}
+
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.contactList_container:
+			mContactSelector.show();
+			break;
+		}
+		
 	}
 
 }

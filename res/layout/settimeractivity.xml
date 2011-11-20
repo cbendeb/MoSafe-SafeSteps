@@ -127,22 +127,28 @@
             android:layout_marginTop="14dp"
             android:text="after my ETA, SafeSteps will contact:" />
 
-        <EditText
-            android:id="@+id/contacts_container"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/contactList_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/after_eta_text"
-            android:layout_marginTop="18dp"
-            android:inputType="textMultiLine" />
+            android:background="#ffffff"
+            android:minHeight="50dp" >
+
+            <ListView
+                android:id="@+id/contactList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff" >
+            </ListView>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/contacts_container"
+            android:layout_below="@+id/contactList_container"
             android:layout_marginTop="14dp"
             android:text="and tell them that:" />
 
@@ -169,7 +175,7 @@
             android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add_more_button"
+            android:layout_below="@+id/contactListContainer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:text="Start!" />
