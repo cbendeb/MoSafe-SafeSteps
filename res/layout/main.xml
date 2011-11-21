@@ -6,11 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/buttonSetRoute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set Route" />
+    
 
     <Button
         android:id="@+id/buttonSetTimer"

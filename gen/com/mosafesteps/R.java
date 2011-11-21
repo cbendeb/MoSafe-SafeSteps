@@ -11,17 +11,19 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int background=0x7f020000;
+        public static final int background_header=0x7f020001;
+        public static final int background_image=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int logo=0x7f020004;
     }
     public static final class id {
         public static final int add10_button=0x7f050021;
-        public static final int add_more_button=0x7f050017;
         public static final int after_eta_container=0x7f050012;
         public static final int after_eta_text=0x7f050013;
         public static final int arrive_in_label=0x7f05000d;
         public static final int arrived_button=0x7f050022;
-        public static final int buttonSetRoute=0x7f050002;
-        public static final int buttonSetTimer=0x7f050003;
+        public static final int buttonSetTimer=0x7f050002;
         public static final int cancel_button=0x7f050020;
         public static final int contactEntryText=0x7f050000;
         public static final int contactList=0x7f050014;
@@ -32,11 +34,13 @@ public final class R {
         public static final int from_container=0x7f050007;
         public static final int from_input=0x7f050009;
         public static final int from_label=0x7f050008;
+        public static final int header=0x7f050003;
         public static final int hours=0x7f05001a;
         public static final int hours_minutes_semicolon=0x7f05001b;
         public static final int main_layout=0x7f050001;
         public static final int message_input=0x7f050016;
         public static final int message_text=0x7f050015;
+        public static final int message_warning=0x7f050017;
         public static final int minutes=0x7f05001c;
         public static final int minutes_seconds_semicolon=0x7f05001d;
         public static final int name_container=0x7f050004;

@@ -11,24 +11,13 @@ import android.widget.Button;
 
 public class Mobsafety extends Activity {
     /** Called when the activity is first created. */
-	Button mSetRoute;
 	Button mSetTimer;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        mSetRoute = (Button) findViewById(R.id.buttonSetRoute);
         mSetTimer = (Button) findViewById(R.id.buttonSetTimer);
-        
-        mSetRoute.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent intent = new Intent(Mobsafety.this, SetRouteActivity.class);
-				startActivity(intent);
-				
-			}
-		});
         
         mSetTimer.setOnClickListener(new View.OnClickListener() {
 			

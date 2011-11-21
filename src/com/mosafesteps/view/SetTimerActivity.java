@@ -141,9 +141,13 @@ public class SetTimerActivity extends Activity implements
 					bundle.putLong("duration", mTimePicker.getCurrentHour()
 							* 60 * 60 * 1000 + mTimePicker.getCurrentMinute()
 							* 60 * 1000);
-					bundle.putLong(
-							"delay",
-							Integer.parseInt(mDontCheck.getText().toString()) * 60 * 1000);
+					if (mDontCheck.getText().toString().equals("")) {
+						bundle.putLong("delay", 0);
+
+					} else {
+						bundle.putLong("delay", Integer.parseInt(mDontCheck
+								.getText().toString()) * 60 * 1000);
+					}
 					bundle.putString("destination", mTo.getText().toString());
 					intent.putExtras(bundle);
 					startActivity(intent);
@@ -173,8 +177,12 @@ public class SetTimerActivity extends Activity implements
 				long millisecondsDuration = mTimePicker.getCurrentHour() * 60
 						* 60 * 1000 + mTimePicker.getCurrentMinute() * 60
 						* 1000;
-				long millisecondsDelay = Integer.parseInt(mDontCheck.getText()
-						.toString()) * 60 * 1000;
+
+				long millisecondsDelay = 0;
+				if (!mDontCheck.getText().toString().equals("")) {
+					millisecondsDelay = Integer.parseInt(mDontCheck.getText()
+							.toString()) * 60 * 1000;
+				}
 				Controller.sendContact(mMessage.getText().toString(),
 						millisecondsDuration, millisecondsDelay, contactNums,
 						SetTimerActivity.this);

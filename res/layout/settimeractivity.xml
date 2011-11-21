@@ -1,176 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_image">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_header"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingBottom="10px"
+        android:paddingTop="10px"
+        android:text="SafeSteps"
+        android:textColor="#142534"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <RelativeLayout
-            android:id="@+id/name_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/name_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="bottom"
-                android:text="My name is:" />
-
-            <EditText
-                android:id="@+id/name_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true" >
-
-                <requestFocus />
-            </EditText>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/from_container"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name_container" >
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/from_label"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="I&apos;m going from:" />
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
 
-            <EditText
-                android:id="@+id/from_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/name_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp" >
 
-        <RelativeLayout
-            android:id="@+id/to_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/from_container" >
+                    <TextView
+                        android:id="@+id/name_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:paddingTop="10dp"
+                        android:text="My name is:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/to_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="To" />
+                    <EditText
+                        android:id="@+id/name_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:minWidth="80dp" >
 
-            <EditText
-                android:id="@+id/to_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
+                        <requestFocus />
+                    </EditText>
+                </RelativeLayout>
 
-        <TextView
-            android:id="@+id/arrive_in_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/to_container"
-            android:text="I should arrive in:" />
+                <RelativeLayout
+                    android:id="@+id/from_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name_container" >
 
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/arrive_in_label"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+                    <TextView
+                        android:id="@+id/from_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingTop="10dp"
+                        android:text="I&apos;m going from:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18dp" />
 
-        <RelativeLayout
-            android:id="@+id/dont_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/timePicker" >
+                    <EditText
+                        android:id="@+id/from_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:minWidth="80dp" />
+                </RelativeLayout>
 
-            <TextView
-                android:id="@+id/dont_check_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="If I don&apos;t check in within" />
+                <RelativeLayout
+                    android:id="@+id/to_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/from_container" >
 
-            <EditText
-                android:id="@+id/dont_check_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:inputType="number" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/to_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:paddingTop="10dp"
+                        android:text="I&apos;m going to:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18dp" />
 
-        <RelativeLayout
-            android:id="@+id/after_eta_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/timePicker" >
-        </RelativeLayout>
+                    <EditText
+                        android:id="@+id/to_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:minWidth="80dp" />
+                </RelativeLayout>
 
-        <TextView
-            android:id="@+id/after_eta_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/dont_container"
-            android:layout_marginTop="14dp"
-            android:text="after my ETA, SafeSteps will contact:" />
+                <TextView
+                    android:id="@+id/arrive_in_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/to_container"
+                    android:text="I should arrive in:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp" />
 
-        <ListView
-            android:id="@+id/contactList"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#444444"
-            android:layout_below="@+id/after_eta_text">
-        </ListView>
+                <TimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/arrive_in_label"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
 
-        <TextView
-            android:id="@+id/message_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/contactList"
-            android:layout_marginTop="14dp"
-            android:text="and tell them that:" />
+                <RelativeLayout
+                    android:id="@+id/dont_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/timePicker" >
 
-        <EditText
-            android:id="@+id/message_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/message_text"
-            android:layout_marginTop="18dp"
-            android:inputType="textMultiLine" />
+                    <TextView
+                        android:id="@+id/dont_check_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="10dp"
+                        android:text="If I don&apos;t arrive on time, wait:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15dp" />
 
-        <Button
-            android:id="@+id/add_more_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/message_input"
-            android:layout_marginTop="26dp"
-            android:layout_toRightOf="@+id/arrive_in_label"
-            android:text="Add More tiers" />
+                    <EditText
+                        android:id="@+id/dont_check_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:inputType="number"
+                        android:minWidth="80dp" />
+                </RelativeLayout>
 
-        <Button
-            android:id="@+id/start_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_more_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
-            android:text="Start!" />
-    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/after_eta_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/timePicker" >
+                </RelativeLayout>
 
-</ScrollView>
+                <TextView
+                    android:id="@+id/after_eta_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/dont_container"
+                    android:layout_marginTop="14dp"
+                    android:text="And then notify:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp" />
+
+                <ListView
+                    android:id="@+id/contactList"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/after_eta_text"
+                    android:background="#444444" >
+                </ListView>
+
+                <TextView
+                    android:id="@+id/message_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/contactList"
+                    android:layout_marginTop="14dp"
+                    android:text="and tell them that:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/message_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/message_text"
+                    android:layout_marginTop="18dp"
+                    android:inputType="textMultiLine" />
+
+                <TextView
+                    android:id="@+id/message_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/message_input"
+                    android:layout_marginTop="14dp"
+                    android:text="PLEASE NOTE: since this is a prototype, the message will be sent to your contact right away"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp" />
+                <Button
+                    android:id="@+id/start_button"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/message_warning"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="26dp"
+                    android:background="@drawable/background"
+                    android:padding="10dp"
+                    android:text="Start!" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
